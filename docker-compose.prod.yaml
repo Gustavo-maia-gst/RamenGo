@@ -1,0 +1,27 @@
+services:
+  ramengo:
+    build: .
+    container_name: ramengo
+    restart: unless-stopped
+    depends_on:
+      - db
+    ports:
+      - "80:80"
+    networks:
+      - ramengo-network
+
+    
+  db:
+    image: postgres
+    container_name: db
+    restart: unless-stopped
+    environment:
+        POSTGRES_USER: "postgres"
+        POSTGRES_PASSWORD: "postgres"
+    networks:
+      - ramengo-network
+    volumes:
+      - ./data:/var/lib/postgresql/data
+  
+networks:
+  ramengo-network:

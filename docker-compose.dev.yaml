@@ -1,0 +1,45 @@
+services:
+  ramengo:
+    build: .
+    container_name: ramengo
+    restart: unless-stopped
+    depends_on:
+      - db
+    ports:
+      - "8000:80"
+    networks:
+      - ramengo-network
+    
+  db:
+    image: postgres
+    container_name: db
+    restart: unless-stopped
+    environment:
+        POSTGRES_USER: "postgres"
+        POSTGRES_PASSWORD: "postgres"
+    ports:
+      - "5432:5432"
+    volumes:
+      - ./data:/var/lib/postgresql/data
+    networks:
+      - ramengo-network      
+
+  pgadmin:
+    image: dpage/pgadmin4
+    user: "${UID}:${GID}"
+    container_name: pgadmin
+    restart: unless-stopped
+    environment:
+        PGADMIN_DEFAULT_EMAIL: "postgres@postgres.com"
+        PGADMIN_DEFAULT_PASSWORD: "postgres"
+    depends_on:
+      - db
+    ports:
+        - "8082:80"
+    volumes:
+      - ./data:/var/lib/pgadmin
+    networks:
+      - ramengo-network
+
+networks:
+  ramengo-network:
