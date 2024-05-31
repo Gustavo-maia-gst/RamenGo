@@ -16,6 +16,8 @@ namespace RamenGo.Api.Middlewares
 
         public async Task Invoke(HttpContext context)
         {
+            context.Request.ContentType = "application/json";
+
             var endpoint = context.GetEndpoint();
             bool authorizeRequest = endpoint?.Metadata?.GetMetadata<ApiKeyAuthorize>() != null;
 

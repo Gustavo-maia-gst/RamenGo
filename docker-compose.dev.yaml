@@ -6,7 +6,7 @@ services:
     depends_on:
       - db
     ports:
-      - "8000:80"
+      - "80:80"
     networks:
       - ramengo-network
     
@@ -37,7 +37,7 @@ services:
     ports:
         - "8082:80"
     volumes:
-      - ./data:/var/lib/pgadmin
+      - ./pgadmin:/var/lib/pgadmin
     networks:
       - ramengo-network
 
