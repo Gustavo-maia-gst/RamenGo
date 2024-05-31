@@ -70,6 +70,16 @@ namespace RamenGo.Host
 
             builder.Services.AddAutoMapper(typeof(RamenGoProfile));
 
+            builder.Services.AddCors(options =>
+            {
+                options.AddDefaultPolicy(builder =>
+                {
+                    builder.AllowAnyOrigin()
+                           .AllowAnyMethod()
+                           .AllowAnyHeader();
+                });
+            });
+
             var app = builder.Build();
 
             app.UseSwagger();
@@ -78,6 +88,8 @@ namespace RamenGo.Host
             app.UseMiddleware<ApiKeyMiddleware>();
 
             app.UseHttpsRedirection();
+
+            app.UseCors();
 
             app.MapControllers();
             app.MapGet("/", async context => await Task.Run(() => context.Response.Redirect("/swagger/")));
