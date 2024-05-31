@@ -4,7 +4,6 @@ using RamenGo.Api.DTOs;
 using RamenGo.Api.Middlewares;
 using RamenGo.Application.Services;
 using RamenGo.Domain.Entities;
-using System.ComponentModel.DataAnnotations;
 
 namespace RamenGo.Api.Controllers
 {
@@ -79,6 +78,33 @@ namespace RamenGo.Api.Controllers
                 return NotFound(new ErrorResponse("brothId or proteinId not found"));
             }
         }
+
+        /// <summary>
+        /// Same as /orders, the front-end is calling /order, but was requested /orders. So there are the two endpoints
+        /// </summary>
+        /// <response code="200">Order placed successfuly</response>
+        [HttpPost("order/")]
+        [ProducesResponseType(typeof(OrderDto), 200)]
+        [ProducesResponseType(typeof(ErrorResponse), 400)]
+        [ProducesResponseType(typeof(ErrorResponse), 403)]
+        [ProducesResponseType(typeof(ErrorResponse), 404)]
+        [ProducesResponseType(500)]
+        public IActionResult CreateOrderFrontEnd([FromBody] OrderCreateDto? orderCreate)
+        {
+            try
+            {
+                if (orderCreate == null || orderCreate.ProteinId == 0 || orderCreate.BrothId == 0)
+                    return BadRequest(new ErrorResponse("both brothId and proteinId are required"));
+
+                Order order = _orderService.CreateOrder(orderCreate.ProteinId, orderCreate.BrothId);
+                return Ok(_mapper.Map<Order, OrderDto>(order));
+            }
+            catch (KeyNotFoundException)
+            {
+                return NotFound(new ErrorResponse("brothId or proteinId not found"));
+            }
+        }
+
 
         /// <summary>
         /// Get an existing order
