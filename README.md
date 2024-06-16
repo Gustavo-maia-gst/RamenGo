@@ -16,7 +16,7 @@ O sistema foi desenvolvido com base no DDD e é constituído por 4 camadas com r
 
  
 ## 🔩 Contrato da API
-- A contrato da api pode ser encontrado na página: https://34.95.198.126.nip.io
+- A contrato da api pode ser encontrado na página: https://gustavonogueira.duckdns.org
 - No guia era pedido o endpoint /orders para a criação de pedidos, entretanto a página de teste (https://tech.redventures.com.br/) faz as requisições para o endpoint /order, devido a isso eu dupliquei o endpoint de criação para aceitar os dois formatos
 - Foi gerado um problema devido aos content-type, a página de teste estava enviando content-type:text/plain, o que causava uma resposta 415 direta do asp net, foi configurado para todas as requests serem tratadas como application/json
 
